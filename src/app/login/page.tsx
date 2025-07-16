@@ -85,23 +85,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-3xl font-extrabold text-blue-800 mb-6 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-zinc-900 to-orange-100">
+      <div className="w-full max-w-md bg-zinc-900 rounded-2xl shadow-2xl p-8 border border-orange-400">
+        <h2 className="text-3xl font-extrabold text-orange-400 mb-6 text-center drop-shadow">
           {isSignUp ? "회원가입" : "로그인"}
         </h2>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="email"
-              className="block text-base font-bold text-gray-900 mb-1"
+              className="block text-base font-bold text-orange-300 mb-1"
             >
               이메일
             </label>
             <input
               type="email"
               id="email"
-              className="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-900 placeholder-gray-500 bg-white"
+              className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 text-orange-100 placeholder-orange-300 bg-black"
               placeholder="이메일을 입력하세요"
               required
               value={email}
@@ -111,14 +111,14 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-base font-bold text-gray-900 mb-1"
+              className="block text-base font-bold text-orange-300 mb-1"
             >
               비밀번호
             </label>
             <input
               type="password"
               id="password"
-              className="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-900 placeholder-gray-500 bg-white"
+              className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 text-orange-100 placeholder-orange-300 bg-black"
               placeholder="비밀번호를 입력하세요"
               required
               value={password}
@@ -130,14 +130,14 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="passwordCheck"
-                className="block text-base font-bold text-gray-900 mb-1"
+                className="block text-base font-bold text-orange-300 mb-1"
               >
                 비밀번호 확인
               </label>
               <input
                 type="password"
                 id="passwordCheck"
-                className="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-900 placeholder-gray-500 bg-white"
+                className="w-full px-4 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 text-orange-100 placeholder-orange-300 bg-black"
                 placeholder="비밀번호를 한 번 더 입력하세요"
                 required
                 value={passwordCheck}
@@ -145,13 +145,15 @@ export default function LoginPage() {
               />
             </div>
           )}
-          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {error && (
+            <div className="text-orange-400 text-sm font-bold">{error}</div>
+          )}
           {!isSignUp && success && (
-            <div className="text-green-600 text-sm">{success}</div>
+            <div className="text-green-400 text-sm font-bold">{success}</div>
           )}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-orange-500 to-orange-400 text-black py-2 rounded-md font-bold hover:from-orange-600 hover:to-orange-500 transition-colors border-2 border-orange-400 shadow-lg disabled:opacity-50"
             disabled={loading}
           >
             {loading
@@ -167,16 +169,16 @@ export default function LoginPage() {
         {!isSignUp && (
           <div className="mt-8">
             <div className="flex items-center mb-4">
-              <div className="flex-grow border-t border-gray-200" />
-              <span className="mx-2 text-gray-400 text-sm">또는</span>
-              <div className="flex-grow border-t border-gray-200" />
+              <div className="flex-grow border-t border-orange-300" />
+              <span className="mx-2 text-orange-300 text-sm">또는</span>
+              <div className="flex-grow border-t border-orange-300" />
             </div>
             <div className="flex flex-col gap-3">
               {SOCIALS.map((s) => (
                 <button
                   key={s.provider}
                   type="button"
-                  className={`w-full flex items-center justify-center gap-2 py-2 rounded-md font-semibold ${s.color} hover:opacity-90 transition-colors`}
+                  className={`w-full flex items-center justify-center gap-2 py-2 rounded-md font-bold border-2 border-orange-400 bg-black text-orange-300 hover:bg-orange-400 hover:text-black transition-colors`}
                   onClick={() => handleSocialLogin(s.provider)}
                   disabled={loading}
                 >
@@ -190,9 +192,9 @@ export default function LoginPage() {
         <div className="mt-6 text-center">
           {isSignUp ? (
             <>
-              이미 계정이 있으신가요?{" "}
+              <span className="text-orange-200">이미 계정이 있으신가요? </span>
               <button
-                className="text-blue-600 hover:underline font-semibold"
+                className="text-orange-400 hover:underline font-bold"
                 onClick={() => {
                   setIsSignUp(false);
                   setError("");
@@ -204,9 +206,9 @@ export default function LoginPage() {
             </>
           ) : (
             <>
-              계정이 없으신가요?{" "}
+              <span className="text-orange-200">계정이 없으신가요? </span>
               <button
-                className="text-blue-600 hover:underline font-semibold"
+                className="text-orange-400 hover:underline font-bold"
                 onClick={() => {
                   setIsSignUp(true);
                   setError("");
