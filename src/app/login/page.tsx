@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import type { User } from "@supabase/supabase-js";
 
 const SOCIALS = [
   {
