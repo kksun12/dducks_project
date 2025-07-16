@@ -1,102 +1,100 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabaseClient";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
+  const [user, setUser] = useState<any>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-white to-indigo-100 flex flex-col items-center justify-center font-sans">
+      <header className="w-full max-w-3xl text-center py-12 flex flex-col items-center">
+        <div className="flex items-center justify-center mb-4">
+          <Image
+            src="/globe.svg"
+            alt="AI 분석"
+            width={56}
+            height={56}
+            className="drop-shadow-lg"
+          />
+        </div>
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-400 mb-4 drop-shadow">
+          AI 기반 <span className="text-blue-700">최적의 컴퓨터 성능 분석</span>
+        </h1>
+        <p className="text-lg sm:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+          인공지능이 내 컴퓨터의 하드웨어와 소프트웨어를 분석하여
+          <br className="sm:hidden" />
+          <span className="font-semibold text-blue-700">
+            가장 빠르고 효율적인 사용법
+          </span>
+          을 제안합니다.
+          <br />
+          벤치마크, 실시간 비교, 맞춤형 AI 리포트까지 한 번에!
+        </p>
+        {/* 로그인 안 된 경우에만 버튼 표시 */}
+        {!user && (
+          <button
+            className="mt-4 px-10 py-3 bg-gradient-to-r from-blue-700 to-indigo-500 text-white text-lg font-bold rounded-full shadow-lg hover:from-blue-800 hover:to-indigo-600 transition-colors"
+            onClick={() => router.push("/login")}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            AI 분석 시작하기
+          </button>
+        )}
+      </header>
+      <main className="w-full max-w-3xl bg-white/90 rounded-2xl shadow-2xl p-10 flex flex-col gap-10 items-center border border-blue-100">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full">
+          <div className="flex flex-col items-center">
+            <Image src="/window.svg" alt="AI 벤치마크" width={48} height={48} />
+            <h2 className="text-lg font-bold text-blue-700 mt-3 mb-1">
+              AI 벤치마크
+            </h2>
+            <p className="text-gray-600 text-center text-sm">
+              AI가 CPU, GPU, 메모리 등 주요 부품을 자동 진단하고
+              <br />
+              최적의 성능을 위한 팁을 제공합니다.
+            </p>
+          </div>
+          <div className="flex flex-col items-center">
+            <Image src="/globe.svg" alt="실시간 비교" width={48} height={48} />
+            <h2 className="text-lg font-bold text-blue-700 mt-3 mb-1">
+              실시간 비교
+            </h2>
+            <p className="text-gray-600 text-center text-sm">
+              다른 사용자와 내 컴퓨터를
+              <br />
+              실시간으로 비교하고 순위를 확인하세요.
+            </p>
+          </div>
+          <div className="flex flex-col items-center">
+            <Image src="/file.svg" alt="AI 리포트" width={48} height={48} />
+            <h2 className="text-lg font-bold text-blue-700 mt-3 mb-1">
+              AI 맞춤 리포트
+            </h2>
+            <p className="text-gray-600 text-center text-sm">
+              AI가 분석한 결과를 바탕으로
+              <br />
+              개인별 맞춤 리포트를 제공합니다.
+            </p>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      <footer className="mt-16 text-gray-500 text-sm text-center">
+        © 2024 AI 컴퓨터 성능분석. Powered by Next.js, Supabase & AI
       </footer>
     </div>
   );
