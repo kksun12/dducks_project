@@ -8,7 +8,8 @@ interface Post {
   id: number;
   title: string;
   author: string;
-  date: string;
+  content: string;
+  created_at?: string;
 }
 
 export default function BoardPage() {
@@ -28,7 +29,7 @@ export default function BoardPage() {
     setError("");
     const { data, error } = await supabase
       .from("posts")
-      .select("id, title, author, date")
+      .select("id, title, author, content, created_at")
       .order("id", { ascending: false });
     if (error) setError(error.message);
     else setPosts(data || []);
@@ -44,14 +45,12 @@ export default function BoardPage() {
     e.preventDefault();
     setFormLoading(true);
     setError("");
-    const today = new Date();
-    const dateStr = today.toISOString().slice(0, 10);
     const { error } = await supabase.from("posts").insert([
       {
         title: formTitle,
         author: formAuthor,
         content: formContent,
-        date: dateStr,
+        // date: dateStr, // 제거
       },
     ]);
     if (error) setError(error.message);
@@ -149,7 +148,7 @@ export default function BoardPage() {
               >
                 <span className="font-medium text-gray-800">{post.title}</span>
                 <span className="text-sm text-gray-500">
-                  {post.author} | {post.date}
+                  {post.author} | {post.created_at?.slice(0, 10)}
                 </span>
               </li>
             ))}
