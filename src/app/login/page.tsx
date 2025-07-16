@@ -4,9 +4,13 @@ import React, { useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import type { User } from "@supabase/supabase-js";
 
-const SOCIALS = [
+const SOCIALS: {
+  provider: "discord" | "github" | "kakao";
+  label: string;
+  color: string;
+  icon: string;
+}[] = [
   {
     provider: "discord",
     label: "Discord로 로그인",
@@ -75,11 +79,13 @@ export default function LoginPage() {
     setLoading(false);
   };
 
-  const handleSocialLogin = async (provider: string) => {
+  const handleSocialLogin = async (
+    provider: "discord" | "github" | "kakao"
+  ) => {
     setLoading(true);
     setError("");
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: provider as any,
+      provider,
     });
     if (error) setError(error.message);
     setLoading(false);
