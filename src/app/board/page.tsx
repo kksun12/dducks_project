@@ -13,7 +13,6 @@ interface Post {
 }
 
 export default function BoardPage() {
-  const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
